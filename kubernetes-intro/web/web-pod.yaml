@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: webnew
+  labels:
+    app: nginx
+spec:
+  containers:
+    - name: webnew
+      image: hastartdocker/webcentos:v3
+      volumeMounts:
+        - name: app
+          mountPath: /app
+  initContainers:
+    - name: init-index-html
+      image: busybox:1.31.0
+      command: ['sh', '-c', 'wget -O- https://tinyurl.com/otus-k8s-intro | sh']
+      volumeMounts:
+        - name: app
+          mountPath: /app
+  volumes:
+    - name: app
+      emptyDir: {}
